@@ -1,0 +1,18 @@
+
+/* Sadly must import all of the stylesheets manually ;/ */
+
+@import 'components/layout/sidebar.css';
+@import 'components/layout/topbar.css';
+@import 'components/layout/workspace.css';
+
+@import 'components/workspaces/template_workspace.css';
+
+@import 'components/template_icon.css';
+@import 'components/template_field.css';
+
+body {
+
+    margin: 0px;
+    padding: 0px;
+
+}

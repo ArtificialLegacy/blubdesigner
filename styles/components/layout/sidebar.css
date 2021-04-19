@@ -1,0 +1,12 @@
+
+.sidebar {
+
+    position: absolute;
+    top: 7em;
+
+    width: 7em;
+    height: calc(100vh - 7em);
+
+    background-color: black;
+
+}

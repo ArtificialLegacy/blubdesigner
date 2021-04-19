@@ -1,0 +1,48 @@
+
+.topbar {
+
+    position: absolute;
+
+    width: 100vw;
+    height: 7em;
+
+    background-color: black;
+
+}
+
+.create-template {
+
+    position: absolute;
+    top: 10px;
+    left: 10px;
+
+    width: 5.5em;
+    height: 5.5em;
+
+    background-color: lightgray;
+    border: none;
+    opacity: 0.7;
+
+}
+
+.create-template:hover {
+
+    opacity: 1;
+
+}
+
+.template-div {
+
+    position: absolute;
+
+    top: 10px;
+    left: 95px;
+
+    width: calc(100vw - 105px);
+    height: 4.5em;
+
+    border: solid gray 1px;
+
+    overflow-x: auto;
+
+}

@@ -1,0 +1,13 @@
+
+.workspace {
+
+    position: absolute;
+    top: 7em;
+    left: 7em;
+
+    width: calc(100vw - 7em);
+    height: calc(100vh - 7em);
+
+    background-color: gray;
+
+}
