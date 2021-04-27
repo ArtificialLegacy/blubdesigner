@@ -24,6 +24,7 @@ class Component {
 
     component: HTMLElement;
     private stateStore: any;
+    oldState: any;
     private listeners: Array<Listener>;
 
     constructor(_comp?: HTMLElement, _state?: any) {
@@ -31,6 +32,7 @@ class Component {
         this.component = _comp ?? document.createElement("div");
 
         this.stateStore = _state ?? {};
+        this.oldState = {};
         this.listeners = [];
 
     }
@@ -109,8 +111,10 @@ class Component {
     get state(): any { return this.stateStore; }
     set state(_state: any) {
 
+        this.oldState = this.stateStore;
         (this.component as any).state = _state;
         this.stateStore = _state;
+        
         this.broadcast(Event.StateChange);
 
     }
