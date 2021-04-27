@@ -1,7 +1,7 @@
 
 class Component {
 
-    constructor(_comp=Component.empty, _state={}) {
+    constructor(_comp=document.createElement("div"), _state={}) {
 
         this.component = _comp;
 
@@ -21,7 +21,7 @@ class Component {
         
     }
 
-    __buildComponent(_component, _parent=undefined, _state=undefined) {
+    __buildComponent(_component, _parent=undefined, _state=null) {
 
         let comp;
 
@@ -29,24 +29,42 @@ class Component {
         else if (_component.prototype instanceof HTMLElement) comp = new Component(_component);
         else comp = _component;
 
-        if (_state) comp.component.state = _state;
-        else comp.component.state = comp.state;
+        if (_state != null) comp.state = _state;
+        else comp.state = comp.state;
+
+        comp.component.__outerComponent = comp;
         
         if (_parent) _parent.component.append(comp.component);
         else this.component.append(comp.component);
 
-        this.broadcast(Component.Events.Render);
-        setTimeout(() => this.broadcast(Component.Events.RenderFinish));
+        comp.broadcast(Component.Events.Render);
+        setTimeout(() => comp.broadcast(Component.Events.RenderFinish));
 
         return comp;
 
     }
+
+    insertBreak(_parent=undefined) {
+
+        const lineBreak = document.createElement("br");
+
+        if (_parent) _parent.component.append(lineBreak);
+        else this.component.append(lineBreak);
+
+    } 
 
     clear() {
 
         this.broadcast(Component.Events.Clear);
         this.component.innerHTML = "";
 
+    }
+
+    remove() {
+        
+        this.broadcast(Component.Events.Remove);
+        this.component.remove();
+    
     }
 
     raw() { return this.component; }
@@ -62,7 +80,11 @@ class Component {
 
     broadcast(_event) {
 
-        for (let listener of this.__listeners) if (listener.event == _event) listener.callback();
+        for (let listener of this.__listeners) {
+            
+            if (listener.event == _event) listener.callback();
+
+        }
 
     }
 
@@ -75,9 +97,10 @@ class Component {
 
     }
 
-    static load(_component, _parent) {
+    static load(_component, _parent, _clear=false) {
 
         const comp = new _component();
+        if (_clear) _parent.innerHTML = "";
         _parent.append(comp.component);
 
         comp.broadcast(Component.Events.Load);
@@ -98,9 +121,9 @@ class Component {
 
     }
 
-    static find(_id) { return new Component(document.getElementById(_id)); }
+    static find(_id) { return document.getElementById(_id).__outerComponent; }
 
-    static get empty() { return document.createElement("div"); }
+    static get empty() { return new Component(); }
 
     static Events = Object.freeze({
         Render: "render",
@@ -108,8 +131,8 @@ class Component {
         Load: "load",
         LoadFinish: "loadFinish",
         Clear: "clear",
+        Remove: "remove",
         StateChange: "stateChange",
-
     });
 
 }

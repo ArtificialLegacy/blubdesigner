@@ -6,16 +6,16 @@ class TemplateController {
 
     static idGenerator = TemplateController.getID();
 
-    static createTemplate(_template=null) {
+    static createTemplate(_template=false) {
 
         // set to an empty template if one isn't provided
-        const templateInst = _template ?? false ? _template : {
+        const templateInst = _template ? _template : {
             name: "New Template", 
             fields: [], 
             tags: []
         };
         
-        const templateDiv = Component.find("templateDiv");
+        const templateDiv = Component.find("template-div");
 
         const state = {id: this.idGenerator.next().value};
 
@@ -24,9 +24,15 @@ class TemplateController {
         template.component.innerText = templateInst.name;
 
         template.state = state;
-        template.component.id = `templateIcon_${state.id}`;
+        template.component.id = `template-icon-${state.id}`;
 
     }
+
+    static getCurrentTemplate(_templateID) {
+
+        return this.templates[this.template.id];
+
+    } 
 
     static* getID() {
 

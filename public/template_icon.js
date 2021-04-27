@@ -14,11 +14,12 @@ class TemplateIcon extends Component {
 
             this.component.className += " current-icon";
             
+            TemplateController.template = this.state;
+
             app.workspace.clear();
             app.render(TemplateWorkspace, app.workspace);
 
-            TemplateController.template = this.state;
-            Component.find("setName").component.value = TemplateController.templates[this.state.id].name;
+            Component.find("set-name").component.value = TemplateController.templates[this.state.id].name;
 
         }
 

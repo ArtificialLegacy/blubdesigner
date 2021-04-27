@@ -7,7 +7,7 @@ class TemplateWorkspace extends Component {
 
         const fieldDiv = Component.createFromHTML(/*html*/`<div class="template-field-div"></div>`);
 
-        const setName = Component.createFromHTML(/*html*/`<input id="setName" class="set-name" value="New Template">`);
+        const setName = Component.createFromHTML(/*html*/`<input id="set-name" class="set-name" value="New Template">`);
         setName.component.addEventListener("change", () => this.setNameChange(setName));
 
         const addField = Component.createFromHTML(/*html*/`
@@ -20,7 +20,6 @@ class TemplateWorkspace extends Component {
                 <option value="description">Description</option>
             </select>
         `);
-
         addField.component.onchange = () => this.addFieldChange(addField, fieldDiv);
 
         const clone = Component.createFromHTML(/*html*/`<button class="template-clone">Clone</button>`);
@@ -38,23 +37,68 @@ class TemplateWorkspace extends Component {
 
         this.render([fieldDiv, setName, addField, clone, close]);
 
+        for (let f in TemplateController.getCurrentTemplate().fields) {
+
+            const field = TemplateController.getCurrentTemplate().fields[f];
+
+            switch (field.type) {
+
+                case "short": {
+
+                    this.renderField(ShortTextField, fieldDiv, {id: f});
+
+                    break;
+
+                }
+
+                case "long": {
+
+                    this.renderField(LongTextField, fieldDiv, {id: f});
+
+                    break;
+
+                }
+
+                case "dropdown": {
+
+                    this.renderField(DropDownField, fieldDiv, {id: f});
+
+                    break;
+
+                }
+
+                case "description": {
+
+                    this.renderField(DescriptionField, fieldDiv, {id: f});
+
+                    break;
+
+                }
+
+            }
+
+        }
+        
     }
 
     setNameChange(_setName) {
 
-        Component.find(`templateIcon_${TemplateController.template.id}`).component.innerText = _setName.component.value;
+        Component.find(`template-icon-${TemplateController.template.id}`).component.innerText = _setName.component.value;
         TemplateController.templates[TemplateController.template.id].name = _setName.component.value;
 
     }
 
     addFieldChange(_addField, _fieldDiv) {
 
-        const addField = (_type) => {
+        const addField = (_type, _component) => {
 
-            TemplateController.templates[TemplateController.template.id].fields.push({
+            TemplateController.getCurrentTemplate().fields.push({
                 type: _type,
                 text: "",
+                label: "",
             });
+
+            this.renderField(_component, _fieldDiv, {id: TemplateController.getCurrentTemplate().fields.length - 1});
 
         }
 
@@ -62,8 +106,7 @@ class TemplateWorkspace extends Component {
 
             case "short": {
 
-                this.render(ShortTextField, _fieldDiv);
-                addField("short");
+                addField("short", ShortTextField);
 
                 break;
 
@@ -71,8 +114,15 @@ class TemplateWorkspace extends Component {
 
             case "long": {
 
-                this.render(LongTextField, _fieldDiv);
-                addField("long");
+                addField("long", LongTextField);
+
+                break;
+
+            }
+
+            case "dropdown": {
+
+                addField("dropdown", DropDownField);
 
                 break;
 
@@ -80,8 +130,7 @@ class TemplateWorkspace extends Component {
 
             case "description": {
 
-                this.render(DescriptionField, _fieldDiv);
-                addField("description");
+                addField("description", DescriptionField);
 
                 break;
 
@@ -90,6 +139,13 @@ class TemplateWorkspace extends Component {
         }
 
         _addField.component.value = "none";
+
+    }
+
+    renderField(_component, _fieldDiv, _state) {
+
+        const field = this.render(_component, _fieldDiv, _state);
+        field.component.id = `template-field-${field.state.id}`;
 
     }
 

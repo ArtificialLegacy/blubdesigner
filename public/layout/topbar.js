@@ -8,9 +8,8 @@ class TopBar extends Component {
         );
 
         const createTemplate = Component.createFromHTML(/*html*/`<button class="create-template">Create Template</button>`);
-
-        const templateDiv = Component.createFromHTML(/*html*/`<div id="templateDiv" class="template-div"></div>`);
-
+        
+        const templateDiv = Component.createFromHTML(/*html*/`<div id="template-div" class="template-div"></div>`);
         createTemplate.component.onclick = () => TemplateController.createTemplate();
 
         this.render([createTemplate, templateDiv]);
