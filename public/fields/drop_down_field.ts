@@ -1,3 +1,6 @@
+import {Component, Event} from "../../src/component";
+import {TemplateField} from "../template_field";
+import {TemplateController} from "../../src/template_controller";
 
 class DropDownField extends TemplateField {
 
@@ -12,3 +15,5 @@ class DropDownField extends TemplateField {
     }
 
 }
+
+export {DropDownField};

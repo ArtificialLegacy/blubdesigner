@@ -1,3 +1,4 @@
+import {Component} from "../../src/component";
 
 class Workspace extends Component {
 
@@ -11,3 +12,5 @@ class Workspace extends Component {
     }
 
 }
+
+export {Workspace};

@@ -10,30 +10,16 @@
 
     <link rel="stylesheet" href="./styles/styles.css">
 
+    <script src="https://requirejs.org/docs/release/2.3.6/minified/require.js"></script>
+
 </head>
 <body>
 
     <div id="app"></div>
 
-    <script src="src/component.js"></script>
-    <script src="src/template_controller.js"></script>
-
-    <script src="public/layout/workspace.js"></script>
-    <script src="public/layout/sidebar.js"></script>
-    <script src="public/layout/topbar.js"></script>
-    
-    <script src="public/template_icon.js"></script>
-    <script src="public/template_field.js"></script>
-
-    <script src="public/workspaces/template_workspace.js"></script>
-
-    <script src="public/fields/drop_down_field.js"></script>
-    <script src="public/fields/image_field.js"></script>
-    <script src="public/fields/long_text_field.js"></script>
-    <script src="public/fields/short_text_field.js"></script>
-    <script src="public/fields/description_field.js"></script>
-
-    <script src="app.js"></script>
+    <script>
+        require(["./build/app"]);
+    </script>
     
 </body>
 </html>

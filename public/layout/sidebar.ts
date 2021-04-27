@@ -1,3 +1,4 @@
+import {Component} from "../../src/component";
 
 class SideBar extends Component {
 
@@ -10,3 +11,5 @@ class SideBar extends Component {
     }
 
 }
+
+export {SideBar};
