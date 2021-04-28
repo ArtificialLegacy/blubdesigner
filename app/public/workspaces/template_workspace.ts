@@ -86,6 +86,10 @@ class TemplateWorkspace extends Component {
         
     }
 
+    /**
+     * Updates the name of a template when the set name input element onchange event is triggered.
+     * @param _setName The component that contains the set name input element.
+     */
     setNameChange(_setName: Component) {
 
         Component.find(`template-icon-${TemplateController.template.id}`).component.innerText = (_setName.component as HTMLInputElement).value;
@@ -93,8 +97,18 @@ class TemplateWorkspace extends Component {
 
     }
 
+    /**
+     * Adds a new field to the current template when the add field drop down element onchange event is triggered.
+     * @param _addField The component that contains the add field drop down element.
+     * @param _fieldDiv The component that contains the field div element.
+     */
     addFieldChange(_addField: Component, _fieldDiv: Component) {
 
+        /**
+         * Store the data for a new field and render it.
+         * @param _type The type of field to add.
+         * @param _component The field component to render.
+         */
         const addField = (_type: FieldType, _component: Component) => {
 
             TemplateController.getCurrentTemplate().fields.push({
@@ -149,6 +163,12 @@ class TemplateWorkspace extends Component {
 
     }
 
+    /**
+     * Renders a field to the field div.
+     * @param _component The field component to render.
+     * @param _fieldDiv The component that contains the field div.
+     * @param _state The state to store in the rendered component and sets the rendered component's element id.
+     */
     renderField(_component: Component, _fieldDiv: Component, _state: any) {
 
         const field = (this.render(_component, _fieldDiv, _state) as Component);

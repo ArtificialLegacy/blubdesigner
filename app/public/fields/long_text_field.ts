@@ -2,13 +2,13 @@ import {Component, Event} from "../../src/component";
 import {TemplateField} from "../template_field";
 import {TemplateController} from "../../src/template_controller";
 
-class ShortTextField extends TemplateField {
+class LongTextField extends TemplateField {
 
     constructor() {
 
         super(
             Component.createFromHTML(/*html*/`
-                <input class="short-text-field">
+                <textarea class="long-text-field"></textarea>  
             `)
         );
 
@@ -22,6 +22,9 @@ class ShortTextField extends TemplateField {
 
     }
 
+    /**
+     * Updates the text in the textarea with the stored text data.
+     */
     updateText() {
 
         (this.fieldComponent.component as HTMLInputElement).value = TemplateController.getCurrentTemplate().fields[this.state.id].text;
@@ -30,4 +33,4 @@ class ShortTextField extends TemplateField {
 
 }
 
-export {ShortTextField};
+export {LongTextField};

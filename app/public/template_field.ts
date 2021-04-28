@@ -1,6 +1,9 @@
 import {Component, Event} from "../src/component";
 import {TemplateController} from "../src/template_controller";
 
+/**
+ * 
+ */
 enum FieldType {
 
     Description,
@@ -11,6 +14,9 @@ enum FieldType {
 
 }
 
+/**
+ * Defines the shape of the template field data that gets stored.
+ */
 interface TemplateFieldData {
 
     type: FieldType,
@@ -23,6 +29,11 @@ class TemplateField extends Component {
 
     fieldComponent: Component;
 
+    /**
+     * 
+     * @param _fieldComponent The component provided by the child class.
+     * @param _noLabel If the component shouldn't render a label.
+     */
     constructor(_fieldComponent: Component, _noLabel: boolean = false) {
 
         super();
@@ -66,6 +77,9 @@ class TemplateField extends Component {
 
     }
 
+    /**
+     * Updates the text in the input with the stored text data.
+     */
     updateLabel(_fieldLabel: Component) {
 
         (_fieldLabel.component as HTMLInputElement).value = TemplateController.getCurrentTemplate().fields[this.state.id].label;

@@ -2,6 +2,9 @@ import {app} from "../app";
 import {Component, BuiltComponent} from "./component";
 import {TemplateIcon} from "../public/template_icon";
 
+/**
+ * Defines the shape of Template data.
+ */
 interface Template {
 
     name: string,
@@ -10,6 +13,9 @@ interface Template {
 
 }
 
+/**
+ * Defines the shape of the state passed to the template icon component.
+ */
 interface TemplateState {
 
     id: number,
@@ -23,6 +29,11 @@ class TemplateController {
 
     static idGenerator = TemplateController.getID();
 
+    /**
+     * Creates a new template and renders a new icon for it.
+     * 
+     * @param _template : An object containing data to set as the initial data for the template.
+     */
     static createTemplate(_template?: Template) {
 
         // set to an empty template if one isn't provided
@@ -45,12 +56,20 @@ class TemplateController {
 
     }
 
+    /**
+     * Get the current template opened in the workspace.
+     * 
+     * @returns The object containing the template's data.
+     */
     static getCurrentTemplate(): Template {
 
         return this.templates[(this.template as TemplateState).id];
 
     } 
 
+    /**
+     * A Generator to create ids for each template.
+     */
     static* getID() {
 
         let totalIDs = 0;

@@ -1,1 +1,4 @@
 build/
+docs/
+node_modules/
+assets/

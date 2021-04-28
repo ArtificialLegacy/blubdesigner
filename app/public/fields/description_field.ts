@@ -23,6 +23,9 @@ class DescriptionField extends TemplateField {
 
     }
 
+    /**
+     * Updates the text in the textarea with the stored text data.
+     */
     updateText() {
 
         (this.fieldComponent.component as HTMLInputElement).value = TemplateController.getCurrentTemplate().fields[this.state.id].text;

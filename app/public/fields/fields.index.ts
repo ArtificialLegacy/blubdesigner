@@ -1,3 +1,8 @@
+/**
+ * Barrels all of the field classes and exports them.
+ * @module Field_Index
+ */
+
 import {DescriptionField} from "./description_field";
 import {DropDownField} from "./drop_down_field";
 import {ImageField} from "./image_field";
