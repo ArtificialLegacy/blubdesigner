@@ -10,13 +10,12 @@ class TemplateWorkspace extends Component {
 
         super();
 
-        const fieldDiv: Component = Component.createFromHTML(/*html*/`<div class="template-field-div"></div>`);
+        const html: any = Component.createFromHTML(/*html*/`
 
-        const setName: Component = Component.createFromHTML(/*html*/`<input id="set-name" class="set-name" value="New Template">`);
-        setName.component.addEventListener("change", () => this.setNameChange(setName));
+            <div component="fieldDiv" class="template-field-div"></div>
 
-        const addField: Component = Component.createFromHTML(/*html*/`
-            <select class="add-field">
+            <input component="setName" id="set-name" class="set-name" value="New Template">
+            <select component="addField" class="add-field">
                 <option value="none" selected>Add Field</option>
                 <option value="short">Short Text</option>
                 <option value="long">Long Text</option>
@@ -24,13 +23,20 @@ class TemplateWorkspace extends Component {
                 <option value="image">Image</option>
                 <option value="description">Description</option>
             </select>
-        `);
+
+            <button component="clone" class="template-clone">Clone</button>
+            <button component="close" class="template-close">Close</button>
+
+        `, false);
+
+        const {fieldDiv, setName, addField, clone, close} = html;
+
+        setName.component.addEventListener("change", () => this.setNameChange(setName));
+
         addField.component.onchange = () => this.addFieldChange(addField, fieldDiv);
 
-        const clone: Component = Component.createFromHTML(/*html*/`<button class="template-clone">Clone</button>`);
         clone.component.onclick = () => { TemplateController.createTemplate(TemplateController.templates[TemplateController.template.id]); };
 
-        const close: Component = Component.createFromHTML(/*html*/`<button class="template-close">Close</button>`);
         close.component.onclick = () => {
             
             const elements: HTMLCollectionOf<Element> = document.getElementsByClassName("current-icon");

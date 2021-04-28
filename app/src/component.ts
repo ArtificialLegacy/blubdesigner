@@ -197,7 +197,8 @@ class Component {
     }
 
     /**
-     * Create a component from HTML.
+     * Create a component from HTML. Will append any HTMLElements that have a component attribute to the created component.
+     * Will parse 'component="name"' and set it to this["name"]: Component
      * 
      * @param _html - The string to build the component from.
      * @param _noDiv - If the wrapper div should be removed, if true only the first node in the string will be added to the component. 
@@ -207,10 +208,30 @@ class Component {
 
         let element: HTMLElement = document.createElement("div");
         element.innerHTML = _html.trim();
+
         let finalElement: HTMLElement = element;
         if (_noDiv) (finalElement as any) = element.firstChild;
 
         const comp: Component = new Component(finalElement);
+
+        if (finalElement.hasAttribute("component")) {
+
+            const compAttribute: string = finalElement.getAttribute("component") as string;
+            (comp as any)[compAttribute] = new Component(finalElement);
+
+        }
+
+        for (const child of finalElement.getElementsByTagName("*")) {
+
+            if (child.hasAttribute("component")) {
+
+                const compAttribute: string = child.getAttribute("component") as string;
+                (comp as any)[compAttribute] = new Component(child as HTMLElement);
+
+            }
+
+        }
+
         return comp;
 
     }
