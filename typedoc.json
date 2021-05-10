@@ -3,5 +3,5 @@
     "out": "docs",
     "highlightTheme": "github-dark",
     "hideGenerator": true,
-    "theme": "./assets/typedoc-dark-theme/bin/default"
+    "theme": "./node_modules/typedoc-dark-theme/bin/default/"
 }
