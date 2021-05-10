@@ -1,6 +1,8 @@
 import {app} from "../app";
 import {Component, BuiltComponent} from "./component";
 import {TemplateIcon} from "../public/template_icon";
+import {TemplateFieldData} from "../public/template_field";
+import {deepCopy} from "../src/util/object_deep_copy";
 
 /**
  * Defines the shape of Template data.
@@ -8,7 +10,7 @@ import {TemplateIcon} from "../public/template_icon";
 interface Template {
 
     name: string,
-    fields: Array<any>,
+    fields: Array<TemplateFieldData>,
     tags: Array<any>
 
 }
@@ -37,22 +39,28 @@ class TemplateController {
     static createTemplate(_template?: Template) {
 
         // set to an empty template if one isn't provided
-        const templateInst: Template = _template ? _template : {
+        const templateInst: Template = _template ? deepCopy(_template) as Template : {
             name: "New Template", 
             fields: [], 
             tags: []
         };
-        
-        const templateDiv = Component.find("template-div");
 
         const state: TemplateState = {id: (this.idGenerator.next().value as number)};
 
         TemplateController.templates[state.id] = templateInst;
-        const template: Component = (app.topbar.render(new TemplateIcon(), templateDiv, state) as Component);
-        template.component.innerText = templateInst.name;
+        app.topbar.state = TemplateController.templates;
 
-        template.state = state;
-        template.component.id = `template-icon-${state.id}`;
+    }
+
+    static deleteTemplate(_templateID: number) {
+
+        
+
+    }
+
+    static setCurrentTemplate(_template: TemplateState) {
+
+        this.template = {..._template};
 
     }
 

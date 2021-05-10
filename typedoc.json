@@ -1,5 +1,5 @@
 {
-    "entryPoints": ["./"],
+    "entryPoints": ["./app/"],
     "out": "docs",
     "highlightTheme": "github-dark",
     "hideGenerator": true,

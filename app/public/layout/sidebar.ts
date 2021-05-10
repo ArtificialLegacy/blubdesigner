@@ -1,4 +1,4 @@
-import {Component} from "../../src/component";
+import {Component, Event} from "../../src/component";
 
 class SideBar extends Component {
 
@@ -7,6 +7,7 @@ class SideBar extends Component {
         super();
 
         this.component.className = "sidebar";
+
 
     }
 

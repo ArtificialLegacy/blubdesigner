@@ -1,5 +1,5 @@
 
-.template-close, .template-clone, .add-field {
+.template-close, .template-clone, .template-delete, .add-field {
 
     position: absolute;
 
@@ -22,6 +22,12 @@
 .template-clone {
     
     bottom: 60px;
+
+}
+
+.template-delete {
+
+    bottom: 110px;
 
 }
 

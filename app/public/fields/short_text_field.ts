@@ -12,11 +12,11 @@ class ShortTextField extends TemplateField {
             `)
         );
 
-        this.fieldComponent.component.onchange = () => {
+        this.fieldComponent.domEvent("change", () => {
 
             TemplateController.getCurrentTemplate().fields[this.state.id].text = (this.fieldComponent.component as HTMLInputElement).value;
 
-        }
+        });
 
         this.addListener(Event.Render, () => this.updateText());
 
@@ -25,7 +25,7 @@ class ShortTextField extends TemplateField {
     /**
      * Updates the text in the input with the stored text data.
      */
-    updateText() {
+    private updateText() {
 
         (this.fieldComponent.component as HTMLInputElement).value = TemplateController.getCurrentTemplate().fields[this.state.id].text;
 

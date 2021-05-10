@@ -21,6 +21,12 @@ interface Listener {
     callback: Function,
 
 }
+interface CustomClass {
+
+    name: string,
+    value: string,
+
+}
 
 type ParentComponent = Component | undefined;
 type UserEvent = Event | string;
@@ -33,6 +39,7 @@ class Component {
     oldState: any;
     private listeners: Array<Listener>;
     private readonly keys: Object;
+    private classList: Array<CustomClass>;
 
     /**
      * 
@@ -48,9 +55,13 @@ class Component {
         this.oldState = {};
         this.listeners = [];
 
+        this.classList = [];
+
         this.keys = Object.freeze(_keys ?? {});
 
     }
+
+    static get empty(): Component { return new Component(); }
 
     /**
      * Render a component into another component.
@@ -60,12 +71,12 @@ class Component {
      * @param _state - An initial state to set to the component as it is rendered.
      * @returns The component or list of components that were rendered.
      */
-    render(_component: BuiltComponent, _parent?: ParentComponent, _state?: any) : BuiltComponent {
+    render(_component: BuiltComponent, _parent?: ParentComponent, _state?: any): BuiltComponent {
 
         if (!Array.isArray(_component)) return this.buildComponent(_component, _parent, _state);
 
         let componentList = [];
-        for (let component of _component) componentList.push(this.buildComponent(component, _parent, _state));
+        for (const component of _component) componentList.push(this.buildComponent(component, _parent, _state));
 
         return componentList;
         
@@ -79,12 +90,14 @@ class Component {
      * @param _state - An initial state to set to the component as it is rendered.
      * @returns The component that was rendered.
      */
-    private buildComponent(_component: Component, _parent: ParentComponent = undefined, _state: any = null) : Component {
+    private buildComponent(_component: Component, _parent: ParentComponent = undefined, _state: any = null): Component {
 
         if (_state != null) _component.state = _state;
 
         const innerComponent: HTMLElement = _component.component;
         (innerComponent as any).__outerComponent = _component;
+
+        _component.parseClasses();
         
         if (_parent) _parent.component.append(_component.component);
         else this.component.append(_component.component);
@@ -92,6 +105,35 @@ class Component {
         _component.broadcast(Event.Render);
 
         return _component;
+
+    }
+
+    private parseClasses() {
+
+        const classList: DOMTokenList = this.component.classList;
+
+        const newClassList: Array<string> = [];
+
+        classList.forEach((_class, _index) => {
+
+            this.classList.forEach(_userClass => {
+
+                if (_userClass.name == _class) {
+
+                    newClassList.push(_userClass.value);
+                    return;
+
+                } else {
+
+                    newClassList.push(_class);
+
+                }
+
+            });
+
+        });
+
+        if (newClassList.length > 0) this.component.className = newClassList.join(" ");
 
     }
 
@@ -126,6 +168,7 @@ class Component {
         
         this.broadcast(Event.Remove);
         this.component.remove();
+        this.component.innerHTML = "";
     
     }
 
@@ -166,6 +209,18 @@ class Component {
 
     }
 
+    domEvent(_event: string, _callback: Function) {
+
+        this.component.addEventListener(_event, (_callback as any));
+
+    }
+
+    createClass(_name: string, _value: string) {
+
+        this.classList.push({name: _name, value: _value});
+
+    }
+
     get state(): any { return this.stateStore; }
     set state(_state: any) {
 
@@ -183,12 +238,13 @@ class Component {
      * @param _component - The component to render.
      * @param _parent - The HTMLElement to append the component to.
      * @param _clear - If the parent element should be cleared first.
-     * @returns 
+     * @returns The component appended to the HTMLElement
      */
     static load(_component: Component, _parent: HTMLElement, _clear: boolean = false): Component {
 
         if (_clear) _parent.innerHTML = "";
         _parent.append(_component.component);
+        (_component.component as any).__outerComponent = _component;
 
         _component.broadcast(Event.Load);
 
@@ -204,7 +260,7 @@ class Component {
      * @param _noDiv - If the wrapper div should be removed, if true only the first node in the string will be added to the component. 
      * @returns The component containing the HTMLElement provided from the string.
      */
-    static createFromHTML(_html: string, _noDiv: boolean = true) : Component {
+    static createFromHTML(_html: string, _noDiv: boolean = true): Component {
 
         let element: HTMLElement = document.createElement("div");
         element.innerHTML = _html.trim();
@@ -247,8 +303,6 @@ class Component {
         return (document.getElementById(_id) as any).__outerComponent;
 
     }
-
-    static get empty(): Component { return new Component(); }
 
 }
 

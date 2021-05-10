@@ -41,6 +41,7 @@
     "convert-source-map": "^1.7.0",
     "copy-descriptor": "^0.1.1",
     "core-util-is": "^1.0.2",
+    "css-minify": "^1.1.0",
     "cssom": "^0.4.4",
     "cssstyle": "^2.3.0",
     "dashdash": "^1.14.1",
@@ -219,9 +220,16 @@
     "snapdragon-util": "^3.0.1",
     "typescript": "^4.2.4"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "@types/jest": "^26.0.23",
+    "ts-jest": "^26.5.5",
+    "typedoc": "^0.20.36"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest",
+    "buildDocs": "typedoc",
+    "buildTS": "tsc",
+    "build": "npm test && npm run-script buildDocs && npm run-script buildTS"
   },
   "author": "",
   "license": "ISC"

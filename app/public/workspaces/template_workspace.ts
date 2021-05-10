@@ -15,90 +15,108 @@ class TemplateWorkspace extends Component {
             <div component="fieldDiv" class="template-field-div"></div>
 
             <input component="setName" id="set-name" class="set-name" value="New Template">
+            
             <select component="addField" class="add-field">
-                <option value="none" selected>Add Field</option>
-                <option value="short">Short Text</option>
-                <option value="long">Long Text</option>
-                <option value="dropdown">Drop Down</option>
-                <option value="image">Image</option>
-                <option value="description">Description</option>
+                <option value="${FieldType.None}" selected>Add Field</option>
+                <option value="${FieldType.ShortText}">Short Text</option>
+                <option value="${FieldType.LongText}">Long Text</option>
+                <option value="${FieldType.DropDown}">Drop Down</option>
+                <option value="${FieldType.Image}">Image</option>
+                <option value="${FieldType.Description}">Description</option>
             </select>
 
+            <button component="deleteTemplate" class="template-delete">Delete</button>
             <button component="clone" class="template-clone">Clone</button>
             <button component="close" class="template-close">Close</button>
 
         `, false);
 
-        const {fieldDiv, setName, addField, clone, close} = html;
+        const {fieldDiv, setName, addField, deleteTemplate, clone, close} = html;
 
-        setName.component.addEventListener("change", () => this.setNameChange(setName));
+        setName.domEvent("change", () => this.setNameChange(setName));
+        setName.component.value = TemplateController.templates[TemplateController.template.id].name;
 
-        addField.component.onchange = () => this.addFieldChange(addField, fieldDiv);
+        addField.domEvent("change", () => this.addFieldChange(addField));
 
-        clone.component.onclick = () => { TemplateController.createTemplate(TemplateController.templates[TemplateController.template.id]); };
+        deleteTemplate.domEvent("click", this.deleteTemplate);
+        clone.domEvent("click", this.cloneTemplate);
+        close.domEvent("click", this.closeTemplate);
+    
+        this.render([fieldDiv, setName, addField, deleteTemplate, clone, close]);
 
-        close.component.onclick = () => {
-            
-            const elements: HTMLCollectionOf<Element> = document.getElementsByClassName("current-icon");
-            for (let element of elements) element.className = "template-icon";
+        this.addListener("fieldRender", () => this.renderFields(fieldDiv));
+        this.broadcast("fieldRender");
+        
+    }
 
-            app.workspace.clear();
+    /**
+     * Renders all fields to the workspace.
+     */
+    private renderFields(_fieldDiv: Component) {
 
-        }
-
-        this.render([fieldDiv, setName, addField, clone, close]);
+        _fieldDiv.clear();
 
         for (let f in TemplateController.getCurrentTemplate().fields) {
 
-            const field = TemplateController.getCurrentTemplate().fields[f];
+            const field: TemplateFieldData = TemplateController.getCurrentTemplate().fields[f];
+
+            let fieldComponent: Component;
 
             switch (field.type) {
 
                 case FieldType.ShortText: {
 
-                    this.renderField(new ShortTextField(), fieldDiv, {id: f});
-
+                    fieldComponent = new ShortTextField();
                     break;
 
                 }
 
                 case FieldType.LongText: {
 
-                    this.renderField(new LongTextField(), fieldDiv, {id: f});
-
+                    fieldComponent = new LongTextField();
                     break;
 
                 }
 
                 case FieldType.DropDown: {
 
-                    this.renderField(new DropDownField(), fieldDiv, {id: f});
-
+                    fieldComponent = new DropDownField();
                     break;
 
                 }
 
                 case FieldType.Description: {
 
-                    this.renderField(new DescriptionField(), fieldDiv, {id: f});
-
+                    fieldComponent = new DescriptionField();
                     break;
+
+                }
+
+                default: {
+
+                    fieldComponent = new ShortTextField();
 
                 }
 
             }
 
+            this.renderField(fieldComponent, _fieldDiv, {id: f});
+
         }
-        
+
     }
 
     /**
      * Updates the name of a template when the set name input element onchange event is triggered.
      * @param _setName The component that contains the set name input element.
      */
-    setNameChange(_setName: Component) {
+    private setNameChange(_setName: Component) {
 
-        Component.find(`template-icon-${TemplateController.template.id}`).component.innerText = (_setName.component as HTMLInputElement).value;
+        const iconComponent = Component.find(`template-icon-${TemplateController.template.id}`);
+        const iconState = iconComponent.state;
+        iconState.name = (_setName.component as HTMLInputElement).value;
+        iconComponent.state = iconState;
+        
         TemplateController.templates[TemplateController.template.id].name = (_setName.component as HTMLInputElement).value;
 
     }
@@ -106,66 +124,40 @@ class TemplateWorkspace extends Component {
     /**
      * Adds a new field to the current template when the add field drop down element onchange event is triggered.
      * @param _addField The component that contains the add field drop down element.
-     * @param _fieldDiv The component that contains the field div element.
      */
-    addFieldChange(_addField: Component, _fieldDiv: Component) {
+    private addFieldChange(_addField: Component) {
 
-        /**
-         * Store the data for a new field and render it.
-         * @param _type The type of field to add.
-         * @param _component The field component to render.
-         */
-        const addField = (_type: FieldType, _component: Component) => {
+        const fieldValue: FieldType = (_addField.component as HTMLSelectElement).value as FieldType;
 
-            TemplateController.getCurrentTemplate().fields.push({
-                type: _type,
-                text: "",
-                label: "",
-            });
+        TemplateController.getCurrentTemplate().fields.push({
+            type: fieldValue,
+            text: "",
+            label: "",
+        });
 
-            this.renderField(_component, _fieldDiv, {id: TemplateController.getCurrentTemplate().fields.length - 1});
+        (_addField.component as HTMLSelectElement).value = `${FieldType.None}`;
+        this.broadcast("fieldRender");
 
-        }
+    }
 
-        const fieldValue: string = (_addField.component as HTMLSelectElement).value;
+    private cloneTemplate() {
 
-        switch (fieldValue) {
+        TemplateController.createTemplate(TemplateController.templates[TemplateController.template.id]);
 
-            case "short": {
+    }
 
-                addField(FieldType.ShortText, new ShortTextField());
+    private closeTemplate() {
 
-                break;
+        const elements: HTMLCollectionOf<Element> = document.getElementsByClassName("current-icon");
+        for (let element of elements) element.className = "template-icon";
 
-            }
+        app.workspace.clear();
 
-            case "long": {
+    }
 
-                addField(FieldType.LongText, new LongTextField());
+    private deleteTemplate() {
 
-                break;
 
-            }
-
-            case "dropdown": {
-
-                addField(FieldType.DropDown, new DropDownField());
-
-                break;
-
-            }
-
-            case "description": {
-
-                addField(FieldType.Description, new DescriptionField());
-
-                break;
-
-            }
-
-        }
-
-        (_addField.component as HTMLSelectElement).value = "none";
 
     }
 
@@ -175,7 +167,7 @@ class TemplateWorkspace extends Component {
      * @param _fieldDiv The component that contains the field div.
      * @param _state The state to store in the rendered component and sets the rendered component's element id.
      */
-    renderField(_component: Component, _fieldDiv: Component, _state: any) {
+    private renderField(_component: Component, _fieldDiv: Component, _state: any) {
 
         const field = (this.render(_component, _fieldDiv, _state) as Component);
         field.component.id = `template-field-${field.state.id}`;

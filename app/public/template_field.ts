@@ -6,11 +6,12 @@ import {TemplateController} from "../src/template_controller";
  */
 enum FieldType {
 
-    Description,
-    DropDown,
-    Image,
-    LongText,
-    ShortText,
+    None = "NONE",
+    Description = "DESCRIPTION",
+    DropDown = "DROPDOWN",
+    Image = "IMAGE",
+    LongText = "LONGTEXT",
+    ShortText = "SHORTTEXT",
 
 }
 
@@ -80,7 +81,7 @@ class TemplateField extends Component {
     /**
      * Updates the text in the input with the stored text data.
      */
-    updateLabel(_fieldLabel: Component) {
+    private updateLabel(_fieldLabel: Component) {
 
         (_fieldLabel.component as HTMLInputElement).value = TemplateController.getCurrentTemplate().fields[this.state.id].label;
 
