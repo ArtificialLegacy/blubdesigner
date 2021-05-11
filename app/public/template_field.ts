@@ -45,17 +45,17 @@ class TemplateField extends Component {
             <input class="field-label">
         `);
 
-        fieldLabel.component.onchange = () => {
+        fieldLabel.domEvent("change", () => {
 
             TemplateController.getCurrentTemplate().fields[this.state.id].label = (fieldLabel.component as HTMLInputElement).value;
 
-        }
+        });
 
         const fieldDelete: Component = Component.createFromHTML(/*html*/`
             <button class="field-delete">X</button>
         `);
 
-        fieldDelete.component.onclick = () => {
+        fieldDelete.domEvent("click", () => {
 
             TemplateController.getCurrentTemplate().fields.splice(this.state.id, 1);
 
@@ -65,7 +65,7 @@ class TemplateField extends Component {
 
             this.remove();
 
-        }
+        });
 
         if (!_noLabel) this.render(fieldLabel);
 

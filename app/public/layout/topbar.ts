@@ -19,7 +19,7 @@ class TopBar extends Component {
 
         const {createTemplate, templateDiv} = html;
 
-        createTemplate.component.onclick = () => TemplateController.createTemplate();
+        createTemplate.domEvent("click", () => TemplateController.createTemplate());
 
         this.render([createTemplate, templateDiv]);
 
