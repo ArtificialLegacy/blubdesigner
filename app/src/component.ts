@@ -75,7 +75,7 @@ class Component {
 
         if (!Array.isArray(_component)) return this.buildComponent(_component, _parent, _state);
 
-        let componentList = [];
+        let componentList = []
         for (const component of _component) componentList.push(this.buildComponent(component, _parent, _state));
 
         return componentList;
@@ -108,10 +108,12 @@ class Component {
 
     }
 
+    /**
+     * Internal method that parses class names for custom classes defined with .createClass()
+     */
     private parseClasses() {
 
         const classList: DOMTokenList = this.component.classList;
-
         const newClassList: Array<string> = [];
 
         classList.forEach((_class, _index) => {
@@ -209,12 +211,24 @@ class Component {
 
     }
 
+    /**
+     * Wraps HTMLElement.addEventListener to the main component class to make it easier to read.
+     * 
+     * @param _event - The name of the event to add a listener to.
+     * @param _callback - Function to act as a callback when the event is run.
+     */
     domEvent(_event: string, _callback: Function) {
 
         this.component.addEventListener(_event, (_callback as any));
 
     }
 
+    /**
+     * Creates custom classes that can be parsed when the component is rendered.
+     * 
+     * @param _name - The name of the class the parser will look for.
+     * @param _value - The value that will replace the name after parsing.
+     */
     createClass(_name: string, _value: string) {
 
         this.classList.push({name: _name, value: _value});

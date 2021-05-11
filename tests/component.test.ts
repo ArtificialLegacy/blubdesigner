@@ -217,7 +217,7 @@ test("Create component from html.", () => {
 
 });
 
-test("Create compoent with component attribute.", () => {
+test("Create component with component attribute.", () => {
 
     let element: string = /*html*/`<div component="test"></div>`;
     const component: Component = Component.createFromHTML(element);
