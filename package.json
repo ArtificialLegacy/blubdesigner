@@ -222,15 +222,19 @@
   },
   "devDependencies": {
     "@types/jest": "^26.0.23",
+    "autoprefixer": "^10.2.5",
+    "postcss": "^8.2.15",
+    "tailwindcss": "^2.1.2",
     "ts-jest": "^26.5.5",
     "typedoc": "^0.20.36",
     "typedoc-dark-theme": "0.0.11"
   },
   "scripts": {
     "test": "jest",
-    "buildDocs": "typedoc",
-    "buildTS": "tsc",
-    "build": "npm test && npm run-script buildDocs && npm run-script buildTS"
+    "build-docs": "typedoc",
+    "build-ts": "tsc",
+    "build-css": "tailwind build ./app/styles/tailwind.css -o ./app/styles/tailwind-built.css",
+    "build": "npm test && npm run build-docs && npm run build-css && npm run build-ts"
   },
   "author": "",
   "license": "ISC"

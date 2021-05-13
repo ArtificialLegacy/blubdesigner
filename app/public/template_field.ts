@@ -26,16 +26,16 @@ interface TemplateFieldData {
 
 }
 
-class TemplateField extends Component {
+class TemplateField<_type extends HTMLElement = HTMLElement> extends Component {
 
-    fieldComponent: Component;
+    fieldComponent: Component<_type>;
 
     /**
      * 
      * @param _fieldComponent The component provided by the child class.
      * @param _noLabel If the component shouldn't render a label.
      */
-    constructor(_fieldComponent: Component, _noLabel: boolean = false) {
+    constructor(_fieldComponent: Component<_type>, _noLabel: boolean = false) {
 
         super();
 

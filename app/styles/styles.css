@@ -1,6 +1,8 @@
 
 /* Sadly must import all of the stylesheets manually ;/ */
 
+@import 'tailwind-built.css';
+
 @import 'components/layout/sidebar.css';
 @import 'components/layout/topbar.css';
 @import 'components/layout/workspace.css';

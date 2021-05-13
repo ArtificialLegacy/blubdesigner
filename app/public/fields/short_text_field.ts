@@ -2,19 +2,19 @@ import {Component, Event} from "../../src/component";
 import {TemplateField} from "../template_field";
 import {TemplateController} from "../../src/template_controller";
 
-class ShortTextField extends TemplateField {
+class ShortTextField extends TemplateField<HTMLInputElement> {
 
     constructor() {
 
         super(
-            Component.createFromHTML(/*html*/`
+            Component.createFromHTML<HTMLInputElement>(/*html*/`
                 <input class="short-text-field">
             `)
         );
 
         this.fieldComponent.domEvent("change", () => {
 
-            TemplateController.getCurrentTemplate().fields[this.state.id].text = (this.fieldComponent.component as HTMLInputElement).value;
+            TemplateController.getCurrentTemplate().fields[this.state.id].text = this.fieldComponent.component.value;
 
         });
 
@@ -27,7 +27,7 @@ class ShortTextField extends TemplateField {
      */
     private updateText() {
 
-        (this.fieldComponent.component as HTMLInputElement).value = TemplateController.getCurrentTemplate().fields[this.state.id].text;
+        this.fieldComponent.component.value = TemplateController.getCurrentTemplate().fields[this.state.id].text;
 
     }
 

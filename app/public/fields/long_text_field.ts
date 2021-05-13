@@ -2,19 +2,19 @@ import {Component, Event} from "../../src/component";
 import {TemplateField} from "../template_field";
 import {TemplateController} from "../../src/template_controller";
 
-class LongTextField extends TemplateField {
+class LongTextField extends TemplateField<HTMLTextAreaElement> {
 
     constructor() {
 
         super(
-            Component.createFromHTML(/*html*/`
+            Component.createFromHTML<HTMLTextAreaElement>(/*html*/`
                 <textarea class="long-text-field"></textarea>  
             `)
         );
 
         this.fieldComponent.domEvent("change", () => {
 
-            TemplateController.getCurrentTemplate().fields[this.state.id].text = (this.fieldComponent.component as HTMLInputElement).value;
+            TemplateController.getCurrentTemplate().fields[this.state.id].text = this.fieldComponent.component.value;
 
         });
 
@@ -27,7 +27,7 @@ class LongTextField extends TemplateField {
      */
     private updateText() {
 
-        (this.fieldComponent.component as HTMLInputElement).value = TemplateController.getCurrentTemplate().fields[this.state.id].text;
+        this.fieldComponent.component.value = TemplateController.getCurrentTemplate().fields[this.state.id].text;
 
     }
 

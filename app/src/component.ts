@@ -21,6 +21,9 @@ interface Listener {
     callback: Function,
 
 }
+/**
+ * Defines the shape of objects added to the classList array.
+ */
 interface CustomClass {
 
     name: string,
@@ -32,9 +35,9 @@ type ParentComponent = Component | undefined;
 type UserEvent = Event | string;
 type BuiltComponent = Component | Array<Component>;
 
-class Component {
+class Component<_type extends HTMLElement = HTMLElement> {
 
-    component: HTMLElement;
+    component: _type;
     private stateStore: any;
     oldState: any;
     private listeners: Array<Listener>;
@@ -47,9 +50,9 @@ class Component {
      * @param _state - The initial state data for the component.
      * @param _keys - The readonly keys for the component.
      */
-    constructor(_comp?: HTMLElement, _state?: any, _keys?: Object) {
+    constructor(_comp?: _type, _state?: any, _keys?: Object) {
 
-        this.component = _comp ?? document.createElement("div");
+        this.component = _comp ?? (document.createElement("div") as unknown as _type);
 
         this.stateStore = _state ?? {};
         this.oldState = {};
@@ -274,35 +277,44 @@ class Component {
      * @param _noDiv - If the wrapper div should be removed, if true only the first node in the string will be added to the component. 
      * @returns The component containing the HTMLElement provided from the string.
      */
-    static createFromHTML(_html: string, _noDiv: boolean = true): Component {
+    static createFromHTML<_type extends HTMLElement = HTMLElement>(_html: string, _noDiv: boolean = true): Component<_type> {
 
-        let element: HTMLElement = document.createElement("div");
+        let element: HTMLDivElement = document.createElement("div");
         element.innerHTML = _html.trim();
 
-        let finalElement: HTMLElement = element;
-        if (_noDiv) (finalElement as any) = element.firstChild;
+        let finalElement: _type = element as unknown as _type;
+        if (_noDiv) finalElement = <_type>element.firstElementChild ?? document.createElement("div");
 
-        const comp: Component = new Component(finalElement);
+        const comp: Component<_type> = new Component<_type>(finalElement as unknown as _type);
 
-        if (finalElement.hasAttribute("component")) {
+        this.parseComponentAttribute(finalElement, comp);
 
-            const compAttribute: string = finalElement.getAttribute("component") as string;
-            (comp as any)[compAttribute] = new Component(finalElement);
+        const children: HTMLCollectionOf<Element> = finalElement.getElementsByTagName("*");
 
-        }
+        for (const child of children) {
 
-        for (const child of finalElement.getElementsByTagName("*")) {
-
-            if (child.hasAttribute("component")) {
-
-                const compAttribute: string = child.getAttribute("component") as string;
-                (comp as any)[compAttribute] = new Component(child as HTMLElement);
-
-            }
+            this.parseComponentAttribute(child as HTMLElement, comp);
 
         }
 
         return comp;
+
+    }
+
+    /**
+     * Internal method for parsing the component attribute.
+     * 
+     * @param _element - The element to parse for the component attribute.
+     * @param _component - The component to append elements to.
+     */
+    private static parseComponentAttribute(_element: HTMLElement, _component: Component) {
+
+        if (_element.hasAttribute("component")) {
+
+            const compAttribute: string = _element.getAttribute("component") as string;
+            (_component as any)[compAttribute] = new Component(_element);
+
+        }
 
     }
 
