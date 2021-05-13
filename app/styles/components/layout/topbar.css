@@ -16,8 +16,8 @@
     top: 10px;
     left: 10px;
 
-    width: 5.5em;
-    height: 5.5em;
+    width: 75px;
+    height: 75px;
 
     background-color: lightgray;
     border: none;
@@ -39,7 +39,7 @@
     left: 95px;
 
     width: calc(100vw - 105px);
-    height: 4.5em;
+    height: 75px;
 
     border: solid gray 1px;
 

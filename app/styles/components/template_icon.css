@@ -1,12 +1,14 @@
 
 .template-icon {
 
+    background-color: lightgray;
+
     margin: 2px;
 
     vertical-align: top;
 
-    width: 5em;
-    height: 5em;
+    width: 69px;
+    height: 69px;
 
     opacity: 0.7;
 

@@ -10,6 +10,8 @@
     width: 6em;
     height: 3em;
 
+    background-color: lightgray;
+
 
 }
 
@@ -37,7 +39,7 @@
 
 }
 
-.template-close:hover, .template-clone:hover, .add-field:hover, .add-field:focus {
+.template-close:hover, .template-clone:hover, .template-delete:hover, .add-field:hover, .add-field:focus {
 
     opacity: 1;
 
