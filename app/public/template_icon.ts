@@ -13,14 +13,22 @@ class TemplateIcon extends Component {
 
         this.domEvent("click", () => this.clickIcon());
 
+        this.addListener(Event.StateChange, () => this.updateName());
+
     }
 
+    /**
+     * Callback for the state change event to update the innerText of the button.
+     */
     private updateName() {
 
         this.component.innerText = this.state.name;
 
     }
 
+    /**
+     * Callback for the click button dom event, opens the clicked template on the workspace.
+     */
     private clickIcon() {
 
         const elements: HTMLCollectionOf<Element> = document.getElementsByClassName("current-icon");
@@ -32,8 +40,6 @@ class TemplateIcon extends Component {
 
         app.workspace.clear();
         app.render(new TemplateWorkspace(), app.workspace, this.state);
-
-        this.addListener(Event.StateChange, () => this.updateName());
 
     }
 

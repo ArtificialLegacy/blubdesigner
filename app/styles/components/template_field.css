@@ -64,16 +64,16 @@
 
 }
 
-.field-label:hover, .field-label:focus, .short-text-field:hover, .short-text-field:focus, .long-text-field:hover, .long-text-field:focus {
-
-    opacity: 1;
-
-}
-
 .drop-down-field {
 
     opacity: 0.7;
 
     width: 10em;
+
+}
+
+.field-label:hover, .field-label:focus, .short-text-field:hover, .drop-down-field:hover {
+
+    opacity: 1;
 
 }

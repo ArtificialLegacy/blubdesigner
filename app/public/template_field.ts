@@ -41,13 +41,13 @@ class TemplateField<_type extends HTMLElement = HTMLElement> extends Component {
 
         this.component.className = "template-field";
 
-        const fieldLabel: Component = Component.createFromHTML(/*html*/`
+        const fieldLabel: Component<HTMLInputElement> = Component.createFromHTML<HTMLInputElement>(/*html*/`
             <input class="field-label">
         `);
 
         fieldLabel.domEvent("change", () => {
 
-            TemplateController.getCurrentTemplate().fields[this.state.id].label = (fieldLabel.component as HTMLInputElement).value;
+            TemplateController.getCurrentTemplate().fields[this.state.id].label = fieldLabel.component.value;
 
         });
 
@@ -81,9 +81,9 @@ class TemplateField<_type extends HTMLElement = HTMLElement> extends Component {
     /**
      * Updates the text in the input with the stored text data.
      */
-    private updateLabel(_fieldLabel: Component) {
+    private updateLabel(_fieldLabel: Component<HTMLInputElement>) {
 
-        (_fieldLabel.component as HTMLInputElement).value = TemplateController.getCurrentTemplate().fields[this.state.id].label;
+        _fieldLabel.component.value = TemplateController.getCurrentTemplate().fields[this.state.id].label;
 
     }
 

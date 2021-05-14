@@ -3,8 +3,6 @@
  * @module Layout_Index
  */
 
-import {SideBar} from "./sidebar";
-import {TopBar} from "./topbar";
-import {Workspace} from "./workspace";
-
-export {SideBar, TopBar, Workspace};
+export * from "./sidebar";
+export * from "./topbar";
+export * from "./workspace";

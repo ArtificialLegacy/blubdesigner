@@ -38,7 +38,7 @@ class TopBar extends Component {
             const template = this.state[temp];
             const templateState = {id: temp};
 
-            const templateIcon: Component = (this.render(new TemplateIcon(), _templateDiv, templateState) as Component);
+            const templateIcon: Component = this.render(new TemplateIcon(), _templateDiv, templateState) as Component;
             templateIcon.component.innerText = template.name;
 
             if (TemplateController.template?.id == templateState.id) templateIcon.component.className += " current-icon";

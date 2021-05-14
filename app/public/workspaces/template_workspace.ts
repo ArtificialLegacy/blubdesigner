@@ -10,7 +10,7 @@ class TemplateWorkspace extends Component {
 
         super();
 
-        const html: any = Component.createFromHTML(/*html*/`
+        const html: Component = Component.createFromHTML(/*html*/`
 
             <div component="fieldDiv" class="template-field-div"></div>
 
@@ -31,7 +31,7 @@ class TemplateWorkspace extends Component {
 
         `, false);
 
-        const {fieldDiv, setName, addField, deleteTemplate, clone, close} = html;
+        const {fieldDiv, setName, addField, deleteTemplate, clone, close} = html as any;
 
         setName.domEvent("change", () => this.setNameChange(setName));
         setName.component.value = TemplateController.templates[TemplateController.template.id].name;
