@@ -1,5 +1,5 @@
 import {Component, Event} from "../../src/component";
-import {TemplateController} from "../../src/template_controller";
+import {TemplateController, Template, TemplateState} from "../../src/template_controller";
 import {TemplateIcon} from "../template_icon";
 
 class TopBar extends Component {
@@ -35,11 +35,10 @@ class TopBar extends Component {
 
             const temp: number = t as unknown as number;
 
-            const template = this.state[temp];
-            const templateState = {id: temp};
+            const template: Template = this.state[temp];
+            const templateState: TemplateState = {id: temp, name: template.name};
 
             const templateIcon: Component = this.render(new TemplateIcon(), _templateDiv, templateState) as Component;
-            templateIcon.component.innerText = template.name;
 
             if (TemplateController.template?.id == templateState.id) templateIcon.component.className += " current-icon";
 

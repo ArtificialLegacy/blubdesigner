@@ -21,6 +21,7 @@ interface Template {
 interface TemplateState {
 
     id: number,
+    name: string,
 
 }
 
@@ -45,7 +46,7 @@ class TemplateController {
             tags: []
         };
 
-        const state: TemplateState = {id: (this.idGenerator.next().value as number)};
+        const state: TemplateState = {id: this.idGenerator.next().value as number, name: "New Template"};
 
         TemplateController.templates[state.id] = templateInst;
         app.topbar.state = TemplateController.templates;
@@ -71,7 +72,7 @@ class TemplateController {
      */
     static getCurrentTemplate(): Template {
 
-        return this.templates[(this.template as TemplateState).id];
+        return this.templates[this.template.id];
 
     } 
 
@@ -80,7 +81,7 @@ class TemplateController {
      */
     static* getID() {
 
-        let totalIDs = 0;
+        let totalIDs: number = 0;
 
         while(true) {
 

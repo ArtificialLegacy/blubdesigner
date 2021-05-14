@@ -110,14 +110,12 @@ class TemplateWorkspace extends Component {
      * Updates the name of a template when the set name input element onchange event is triggered.
      * @param _setName The component that contains the set name input element.
      */
-    private setNameChange(_setName: Component) {
+    private setNameChange(_setName: Component<HTMLInputElement>) {
 
         const iconComponent = Component.find(`template-icon-${TemplateController.template.id}`);
         const iconState = iconComponent.state;
-        iconState.name = (_setName.component as HTMLInputElement).value;
+        iconState.name = _setName.component.value;
         iconComponent.state = iconState;
-        
-        TemplateController.templates[TemplateController.template.id].name = (_setName.component as HTMLInputElement).value;
 
     }
 
@@ -125,9 +123,9 @@ class TemplateWorkspace extends Component {
      * Adds a new field to the current template when the add field drop down element onchange event is triggered.
      * @param _addField The component that contains the add field drop down element.
      */
-    private addFieldChange(_addField: Component) {
+    private addFieldChange(_addField: Component<HTMLSelectElement>) {
 
-        const fieldValue: FieldType = (_addField.component as HTMLSelectElement).value as FieldType;
+        const fieldValue: FieldType = _addField.component.value as FieldType;
 
         TemplateController.getCurrentTemplate().fields.push({
             type: fieldValue,
@@ -135,7 +133,7 @@ class TemplateWorkspace extends Component {
             label: "",
         });
 
-        (_addField.component as HTMLSelectElement).value = `${FieldType.None}`;
+        _addField.component.value = `${FieldType.None}`;
         this.broadcast("fieldRender");
 
     }

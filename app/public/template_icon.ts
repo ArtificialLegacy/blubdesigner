@@ -24,6 +24,8 @@ class TemplateIcon extends Component {
 
         this.component.innerText = this.state.name;
 
+        TemplateController.templates[this.state.id].name = this.state.name;
+
     }
 
     /**
