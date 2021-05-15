@@ -9,7 +9,8 @@ class DescriptionField extends TemplateField<HTMLTextAreaElement> {
         super(
             Component.createFromHTML<HTMLTextAreaElement>(/*html*/`
                 <textarea class="long-text-field"></textarea>
-            `), 
+            `),
+            undefined,
             true
         );
 

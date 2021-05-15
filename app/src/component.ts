@@ -330,6 +330,11 @@ class Component<_type extends HTMLElement = HTMLElement> {
 
     }
 
+    /**
+     * Shorthand getter for creating an empty div component.
+     */
+    static get div(): Component<HTMLDivElement> { return Component.createFromHTML(/*html*/`<div></div>`); }
+
 }
 
 export {Component, Event, Listener, ParentComponent, UserEvent, BuiltComponent}

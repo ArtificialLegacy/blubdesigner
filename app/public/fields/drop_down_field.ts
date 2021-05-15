@@ -9,6 +9,12 @@ class DropDownField extends TemplateField<HTMLSelectElement> {
         super(
             Component.createFromHTML<HTMLSelectElement>(/*html*/`
                 <select class="drop-down-field"></select>
+            `),
+            Component.createFromHTML(/*html*/`
+                <div class="drop-down-tools">
+                    <input class="drop-down-field-option-text">
+                    <button class="drop-down-field-add">+</button>
+                </div>
             `)
         );
 

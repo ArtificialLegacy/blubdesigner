@@ -49,7 +49,7 @@
 
 }
 
-.field-label, .short-text-field, .long-text-field {
+.field-label, .short-text-field, .long-text-field, .drop-down-field {
 
     opacity: 0.7;
 
@@ -66,14 +66,43 @@
 
 .drop-down-field {
 
-    opacity: 0.7;
-
     width: 10em;
 
 }
 
-.field-label:hover, .field-label:focus, .short-text-field:hover, .drop-down-field:hover {
+.field-label:hover, .short-text-field:hover, .drop-down-field:hover, .drop-down-field-option-text:hover  {
 
     opacity: 1;
+
+}
+
+.drop-down-tools {
+
+    margin-left: 10px;
+
+}
+
+.drop-down-field-option-text {
+
+    padding-left: 5px;
+    opacity: 0.7;
+
+}
+
+.drop-down-field-add {
+
+    background-color: lightgray;
+    border: none;
+    opacity: 0.7;
+
+    height: 2.5em;
+    width: 2.5em;
+    margin-top: 5px;
+
+}
+
+.drop-down-field-add:hover {
+
+    background-color: lime;
 
 }
